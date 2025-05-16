@@ -38,4 +38,24 @@ public class ClienteRepository {
         }
         return clientes;
     }
+
+    public void actualizar(Cliente cliente) throws SQLException {
+        String sql = "UPDATE clientes SET nombre = ?, cedula = ?, telefono = ?, email = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, cliente.getNombre());
+            stmt.setString(2, cliente.getCedula());
+            stmt.setString(3, cliente.getTelefono());
+            stmt.setString(4, cliente.getEmail());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        String sql = "DELETE clientes WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+
+    }
 }

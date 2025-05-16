@@ -41,4 +41,25 @@ public class ReservaRepository {
         }
         return reservas;
     }
+
+    public void actualizar(Reserva reserva) throws SQLException {
+        String sql = "UPDATE reservas SET cliente_id = ?, mesa_id = ?, fecha = ?, hora = ?, estado = ?,WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, reserva.getClienteId());
+            stmt.setInt(2, reserva.getMesaId());
+            stmt.setDate(3, Date.valueOf(reserva.getFecha()));
+            stmt.setTime(4, Time.valueOf(reserva.getHora()));
+            stmt.setString(5, reserva.getEstado());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        String sql = "DELETE reservas  WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+
+    }
 }

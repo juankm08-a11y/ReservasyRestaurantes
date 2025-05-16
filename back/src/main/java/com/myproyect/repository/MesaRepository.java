@@ -36,4 +36,23 @@ public class MesaRepository {
         }
         return mesas;
     }
+
+    public void actualizar(Mesa mesa) throws SQLException {
+        String sql = "UPDATE mesas SET numero = ?, capacidad = ?, ubicacion = ?,WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, mesa.getNumero());
+            stmt.setInt(2, mesa.getCapacidad());
+            stmt.setString(3, mesa.getUbicacion());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void eliminar(int id) throws SQLException {
+        String sql = "DELETE mesas WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+
+    }
 }
