@@ -97,4 +97,28 @@ public class ReservaRepository {
         }
         return reservas;
     }
+
+    public List<Reserva> findAll() throws SQLException {
+        return obtenerTodas();
+    }
+
+    public Reserva getById(int id) throws SQLException {
+        String sql = "SELECT * FROM reservas WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Reserva(
+                            rs.getInt("id"),
+                            rs.getInt("cliente_id"),
+                            rs.getInt("mesa_id"),
+                            rs.getDate("fecha").toLocalDate(),
+                            rs.getTime("hora").toLocalTime(),
+                            rs.getString("estado"));
+                }
+            }
+        }
+        return null;
+    }
 }

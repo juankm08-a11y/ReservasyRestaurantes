@@ -72,4 +72,27 @@ public class MesaRepository {
         }
         return mesas;
     }
+
+    public List<Mesa> findAll() throws SQLException {
+        return obtenerTodas();
+    }
+
+    public Mesa getById(int id) throws SQLException {
+        String sql = "SELECT * FROM mesas WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Mesa(
+                            rs.getInt("id"),
+                            rs.getInt("numero"),
+                            rs.getInt("capacidad"),
+                            rs.getString("ubicacion"));
+                }
+            }
+        }
+        return null;
+    }
 }
