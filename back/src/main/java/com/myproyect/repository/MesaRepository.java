@@ -55,4 +55,21 @@ public class MesaRepository {
         }
 
     }
+
+    public List<Mesa> obtenerMesasOrdenadasPorCapacidad() throws SQLException {
+        List<Mesa> mesas = new ArrayList<>();
+        String sql = "SELECT * FROM mesas ORDER BY capacidad DESC";
+        try (Connection conn = DatabaseConnection.getInstance();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                mesas.add(new Mesa(
+                        rs.getInt("id"),
+                        rs.getInt("numero"),
+                        rs.getInt("capacidad"),
+                        rs.getString("ubicacion")));
+            }
+        }
+        return mesas;
+    }
 }

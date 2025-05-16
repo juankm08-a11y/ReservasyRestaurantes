@@ -58,4 +58,29 @@ public class ClienteRepository {
         }
 
     }
+
+    public List<Cliente> findAll() throws SQLException {
+        return obtenerTodos();
+    }
+
+    public Cliente getById(int id) throws SQLException {
+        String sql = "SELECT * FROM  WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Cliente(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("cedula"),
+                            rs.getString("telefono"),
+                            rs.getString("email"));
+
+                }
+            }
+        }
+        ;
+
+        return null;
+    }
 }

@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.myproyect.model.EstadoCount;
 import com.myproyect.model.Reserva;
 
 public class ReservaRepository {
@@ -61,5 +62,39 @@ public class ReservaRepository {
             stmt.executeUpdate();
         }
 
+    }
+
+    public List<EstadoCount> contarReservasPorEstado() throws SQLException {
+        List<EstadoCount> resultados = new ArrayList<>();
+        String sql = "SELECT estado, COUNT(*) AS total FROM reservas GROUP BY estado";
+        try (Connection conn = DatabaseConnection.getInstance();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                resultados.add(new EstadoCount(
+                        rs.getString("estado"),
+                        rs.getInt("total")));
+            }
+        }
+        return resultados;
+    }
+
+    public List<Reserva> obtenerReservasOrdenadasPorFechaHora() throws SQLException {
+        List<Reserva> reservas = new ArrayList<>();
+        String sql = "SELECT * FROM reservas ORDER BY fecha DESC, hora DESC";
+        try (Connection conn = DatabaseConnection.getInstance();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                reservas.add(new Reserva(
+                        rs.getInt("id"),
+                        rs.getInt("cliente_id"),
+                        rs.getInt("mesa_id"),
+                        rs.getDate("fecha").toLocalDate(),
+                        rs.getTime("hora").toLocalTime(),
+                        rs.getString("estado")));
+            }
+        }
+        return reservas;
     }
 }
