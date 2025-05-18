@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.myproyect.model.Cliente;
+import com.myproyect.models.Cliente;
 
 public class ClienteRepository {
     private final Connection conn;

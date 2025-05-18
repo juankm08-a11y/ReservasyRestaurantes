@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.myproyect.model.Mesa;
+import com.myproyect.models.Mesa;
 
 public class MesaRepository {
     private final Connection connection;

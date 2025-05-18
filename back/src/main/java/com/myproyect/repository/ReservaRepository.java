@@ -6,8 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.myproyect.model.EstadoCount;
-import com.myproyect.model.Reserva;
+import com.myproyect.models.EstadoCount;
+import com.myproyect.models.Reserva;
 
 public class ReservaRepository {
     private final Connection conn;

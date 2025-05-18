@@ -1,4 +1,4 @@
-package com.myproyect.model;
+package com.myproyect.models;
 
 public class EncargadoAseo {
     private int id;
