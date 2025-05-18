@@ -22,7 +22,7 @@ public class Mesero {
         this.id = id;
     }
 
-    public int getEmpleado() {
+    public int getEmpleadoId() {
         return empleadoId;
     }
 
