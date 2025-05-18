@@ -38,6 +38,23 @@ public class MenuRepository {
         return list;
     }
 
+    public Menu obtenerPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM menu WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Menu(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getDouble("precio"));
+                }
+            }
+        }
+        return null;
+    }
+
     public void actualizarMenu(Menu menu) throws SQLException {
         String sql = "UPDATE menu SET nombre = ?, descripcion = ?, precio = ? WHERE id=? ";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

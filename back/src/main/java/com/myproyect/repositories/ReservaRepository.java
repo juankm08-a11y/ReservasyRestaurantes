@@ -28,7 +28,7 @@ public class ReservaRepository {
         }
     }
 
-    public List<Reserva> obtenerTodas() throws SQLException {
+    public List<Reserva> obtenerTodos() throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
         String sql = "SELECT * FROM mesas";
         try (

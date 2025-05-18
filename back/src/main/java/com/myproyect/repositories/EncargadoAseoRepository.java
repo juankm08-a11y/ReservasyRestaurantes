@@ -6,10 +6,10 @@ import java.util.*;
 import com.myproyect.models.EncargadoAseo;
 import com.myproyect.utils.DatabaseConnection;
 
-public class EncargadoRepository {
+public class EncargadoAseoRepository {
     private final Connection connection;
 
-    public EncargadoRepository() throws SQLException {
+    public EncargadoAseoRepository() throws SQLException {
         this.connection = DatabaseConnection.getInstance();
     }
 
