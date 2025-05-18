@@ -78,9 +78,9 @@ public class ClienteRepository {
 
     public void eliminar(int id) throws SQLException {
         String sql = "DELETE clientes WHERE id=?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            st.executeUpdate();
         }
 
     }
