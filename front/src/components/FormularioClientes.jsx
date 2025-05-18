@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { crearCliente } from "../services/clienteService";
 export default function FormularioClientes() {
   const [nombre, setNombre] = useState("");
   const [cedula, setCedula] = useState("");
@@ -15,7 +15,7 @@ export default function FormularioClientes() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!nombre || !cedula || !telefono || !email) {
-      alert("Por favor llene los datos");
+      return;
     }
 
     const clienteData = {
@@ -26,11 +26,14 @@ export default function FormularioClientes() {
     };
 
     try {
-      const nuevo = await createCliente(clienteData);
+      await crearCliente(clienteData);
+      alert("Cliente registrado con exito");
       resetForm();
     } catch (error) {
       alert("Error al registrar el cliente");
     }
+
+    console.log(clienteData);
   };
 
   const handleCancelar = () => {

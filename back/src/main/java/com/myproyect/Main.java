@@ -2,6 +2,9 @@ package com.myproyect;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import com.myproyect.api.Api;
+import com.myproyect.config.CorsConfig;
 import com.myproyect.utils.DatabaseConnection;
 
 public class Main {
@@ -9,7 +12,11 @@ public class Main {
         try (Connection myConnection = DatabaseConnection.getInstance()) {
             System.out.println("Conexion exitosa");
         } catch (Exception e) {
-            System.out.println("Conexion fallida");
+            System.out.println("Conexion fallida" + e.getMessage());
+            e.printStackTrace();
         }
+        Api.init();
+        CorsConfig.enableCors();
+        Api.routes();
     }
 }
