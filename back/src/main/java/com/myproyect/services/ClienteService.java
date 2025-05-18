@@ -7,30 +7,30 @@ import com.myproyect.models.Cliente;
 import com.myproyect.repositories.ClienteRepository;
 
 public class ClienteService {
-    private final ClienteRepository repo;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteService() throws SQLException {
-        this.repo = new ClienteRepository();
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     public void crear(Cliente c) throws SQLException {
-        repo.insertar(c);
+        clienteRepository.insertar(c);
     }
 
     public List<Cliente> listar() throws SQLException {
-        return repo.obtenerTodos();
+        return clienteRepository.obtenerTodos();
     }
 
     public Cliente ver(int id) throws SQLException {
-        return repo.getById(id);
+        return clienteRepository.getById(id);
     }
 
     public void actualizar(Cliente c) throws SQLException {
-        repo.actualizar(c);
+        clienteRepository.actualizar(c);
     }
 
     public void eliminar(int id) throws SQLException {
-        repo.eliminar(id);
+        clienteRepository.eliminar(id);
     }
 
 }

@@ -17,7 +17,7 @@ public class CocineroService {
         repository.insertarCocinero(c);
     }
 
-    public List<Cocinero> obtenerTodCocineros() throws SQLException {
+    public List<Cocinero> obtenerTodosLosCocineros() throws SQLException {
         return repository.obtenerTodosLosCocineros();
     }
 

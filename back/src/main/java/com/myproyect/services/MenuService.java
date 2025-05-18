@@ -2,33 +2,30 @@ package com.myproyect.services;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.sql.Connection;
 
 import com.myproyect.models.Menu;
 import com.myproyect.repositories.MenuRepository;
-import com.myproyect.utils.DatabaseConnection;
 
 public class MenuService {
-    private final MenuRepository repo;
+    private final MenuRepository menuRepository;
 
-    public MenuService() throws SQLException {
-        Connection conn = DatabaseConnection.getInstance();
-        this.repo = new MenuRepository(conn);
+    public MenuService(MenuRepository menuRepository) {
+        this.menuRepository = menuRepository;
     }
 
     public void crear(Menu menu) throws SQLException {
-        repo.insertarMenu(menu);
+        menuRepository.insertarMenu(menu);
     }
 
     public List<Menu> listar() throws SQLException {
-        return repo.obtenerTodosLosMenus();
+        return menuRepository.obtenerTodosLosMenus();
     }
 
     public void actualizarMenu(Menu menu) throws SQLException {
-        repo.actualizarMenu(menu);
+        menuRepository.actualizarMenu(menu);
     }
 
     public void eliminar(int id) throws SQLException {
-        repo.eliminarMenu(id);
+        menuRepository.eliminarMenu(id);
     }
 }
