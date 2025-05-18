@@ -1,12 +1,11 @@
-package com.myproyect.repository;
+package com.myproyect.repositories;
 
+import com.myproyect.models.Mesa;
 import com.myproyect.utils.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.myproyect.model.Mesa;
 
 public class MesaRepository {
     public void guardar(Mesa mesa) throws SQLException {
@@ -95,4 +94,5 @@ public class MesaRepository {
         }
         return null;
     }
+
 }

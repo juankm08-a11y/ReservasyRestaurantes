@@ -1,13 +1,12 @@
-package com.myproyect.repository;
+package com.myproyect.repositories;
 
+import com.myproyect.models.EstadoCount;
+import com.myproyect.models.Reserva;
 import com.myproyect.utils.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.myproyect.model.EstadoCount;
-import com.myproyect.model.Reserva;
 
 public class ReservaRepository {
     public void guardar(Reserva reserva) throws SQLException {
@@ -121,4 +120,28 @@ public class ReservaRepository {
         }
         return null;
     }
+
+    public List<Reserva> obtenerReservasCanceladasUltimoTrimestre() throws SQLException {
+        String sql = "SELECT * FROM reservas " +
+                "WHERE estado = 'Cancelada' " +
+                "AND fecha >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
+
+        List<Reserva> reservas = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getInstance();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                reservas.add(new Reserva(
+                        rs.getInt("id"),
+                        rs.getInt("cliente_id"),
+                        rs.getInt("mesa_id"),
+                        rs.getDate("fecha").toLocalDate(),
+                        rs.getTime("hora").toLocalTime(),
+                        rs.getString("estado")));
+            }
+        }
+        return reservas;
+    }
+
 }
