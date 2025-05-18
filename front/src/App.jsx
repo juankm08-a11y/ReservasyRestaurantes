@@ -1,6 +1,5 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Inicio from "./pages/Inicio";
@@ -12,17 +11,17 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="bg-[#f38b26] ">
+    <div className="bg-[#7fe77f]">
       <h1 className="flex justify-center items-center">
         Reservas y Restaurantes
       </h1>
+      <p>Bienvenido a nuestra plataforma software de reservas y Restaurantes</p>
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/registro-clientes" element={<RegistroClientes />} />
         <Route path="/registro-mesas" element={<RegistroMesas />} />
         <Route path="/registro-reservas" element={<RegistroReservas />} />
       </Routes>
-      <p>Bienvenido a nuestra plataforma software de reservas y Restaurantes</p>
     </div>
   );
 }

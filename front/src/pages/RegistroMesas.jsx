@@ -1,5 +1,10 @@
 import React from "react";
+import FormularioMesas from "../components/FormularioMesas";
 
 export default function RegistroMesas() {
-  return <div></div>;
+  return (
+    <div>
+      <FormularioMesas />
+    </div>
+  );
 }
