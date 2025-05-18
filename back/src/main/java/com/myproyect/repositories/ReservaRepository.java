@@ -1,4 +1,4 @@
-package com.myproyect.repository;
+package com.myproyect.repositories;
 
 import com.myproyect.utils.DatabaseConnection;
 

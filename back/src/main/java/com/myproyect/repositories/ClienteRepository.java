@@ -1,10 +1,9 @@
-package com.myproyect.repository;
+package com.myproyect.repositories;
 
 import com.myproyect.utils.DatabaseConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.myproyect.models.Cliente;
 

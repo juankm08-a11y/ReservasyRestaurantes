@@ -1,4 +1,4 @@
-package com.myproyect.repository;
+package com.myproyect.repositories;
 
 import com.myproyect.utils.DatabaseConnection;
 
@@ -26,7 +26,7 @@ public class MesaRepository {
 
     }
 
-    public List<Mesa> obtenerTodasMesas() throws SQLException {
+    public List<Mesa> obtenerTodasLasMesas() throws SQLException {
         List<Mesa> mesas = new ArrayList<>();
         String sql = "SELECT * FROM mesas";
         try (Statement stmt = connection.createStatement();
