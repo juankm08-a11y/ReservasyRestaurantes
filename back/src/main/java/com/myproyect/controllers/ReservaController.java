@@ -10,8 +10,8 @@ import com.myproyect.services.ReservaService;
 public class ReservaController {
     private final ReservaService reservaService;
 
-    public ReservaController(ReservaService reservaService) {
-        this.reservaService = reservaService;
+    public ReservaController() {
+        this.reservaService = new ReservaService(null);
     }
 
     public void crear(Reserva reserva) throws SQLException {

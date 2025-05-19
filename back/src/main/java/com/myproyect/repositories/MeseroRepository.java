@@ -29,7 +29,7 @@ public class MeseroRepository {
             while (rs.next()) {
                 list.add(new Mesero(
                         rs.getInt("id"),
-                        rs.getInt("id"),
+                        rs.getInt("empleadoId"),
                         rs.getString("turno")));
             }
         }

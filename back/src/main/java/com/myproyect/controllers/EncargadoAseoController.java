@@ -9,8 +9,8 @@ import com.myproyect.services.EncargadoAseoService;
 public class EncargadoAseoController {
     private final EncargadoAseoService encargadoAseoService;
 
-    public EncargadoAseoController(EncargadoAseoService encargadoAseoService) {
-        this.encargadoAseoService = encargadoAseoService;
+    public EncargadoAseoController() {
+        this.encargadoAseoService = new EncargadoAseoService(null);
     }
 
     public void crear(EncargadoAseo encargadoAseo) throws SQLException {

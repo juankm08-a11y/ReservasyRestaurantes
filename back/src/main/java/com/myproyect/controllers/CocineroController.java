@@ -9,8 +9,8 @@ import com.myproyect.services.CocineroService;
 public class CocineroController {
     private final CocineroService cocineroService;
 
-    public CocineroController(CocineroService cocineroService) {
-        this.cocineroService = cocineroService;
+    public CocineroController() {
+        this.cocineroService = new CocineroService(null);
     }
 
     public void crear(Cocinero cocinero) throws SQLException {

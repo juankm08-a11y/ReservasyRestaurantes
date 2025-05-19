@@ -9,8 +9,8 @@ import com.myproyect.services.MesaService;
 public class MesaController {
     private final MesaService mesaService;
 
-    public MesaController(MesaService mesaService) {
-        this.mesaService = mesaService;
+    public MesaController() {
+        this.mesaService = new MesaService(null);
     }
 
     public void crear(Mesa mesa) throws SQLException {

@@ -9,8 +9,8 @@ import com.myproyect.services.MenuService;
 public class MenuController {
     private final MenuService menuService;
 
-    public MenuController(MenuService menuService) {
-        this.menuService = menuService;
+    public MenuController() {
+        this.menuService = new MenuService(null);
     }
 
     public void crear(Menu menu) throws SQLException {

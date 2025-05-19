@@ -9,8 +9,8 @@ import com.myproyect.services.MeseroService;
 public class MeseroController {
     private final MeseroService meseroService;
 
-    public MeseroController(MeseroService meseroService) {
-        this.meseroService = meseroService;
+    public MeseroController() {
+        this.meseroService = new MeseroService(null);
     }
 
     public void crear(Mesero mesero) throws SQLException {

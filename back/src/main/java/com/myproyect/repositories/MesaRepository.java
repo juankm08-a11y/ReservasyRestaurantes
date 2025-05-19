@@ -69,7 +69,7 @@ public class MesaRepository {
     }
 
     public void eliminarMesa(int id) throws SQLException {
-        String sql = "DELETE mesas WHERE id = ?";
+        String sql = "DELETE FROM mesas WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();

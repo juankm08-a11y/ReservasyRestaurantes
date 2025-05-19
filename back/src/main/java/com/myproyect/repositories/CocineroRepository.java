@@ -27,7 +27,7 @@ public class CocineroRepository {
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Cocinero(rs.getInt("id"), rs.getInt("id"), rs.getString("especialidad")));
+                list.add(new Cocinero(rs.getInt("id"), rs.getInt("empleadoId"), rs.getString("especialidad")));
             }
         }
         return list;

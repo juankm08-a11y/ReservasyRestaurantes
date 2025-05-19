@@ -9,8 +9,8 @@ import com.myproyect.services.ClienteService;
 public class ClienteController {
     private final ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService) {
-        this.clienteService = clienteService;
+    public ClienteController() {
+        this.clienteService = new ClienteService(null);
     }
 
     public void crear(Cliente cliente) throws SQLException {

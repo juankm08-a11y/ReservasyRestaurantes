@@ -57,7 +57,7 @@ public class EmpleadoRepository {
     }
 
     public void actualizarEmpleado(Empleado e) throws SQLException {
-        String sql = "UPDATE empleados SET nombre = ?, rol = ?; telefono = ? WHERE id = ?";
+        String sql = "UPDATE empleados SET nombre = ?, rol = ? telefono = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, e.getNombre());
             stmt.setString(2, e.getRol());

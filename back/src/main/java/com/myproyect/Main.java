@@ -2,7 +2,7 @@ package com.myproyect;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+import com.myproyect.controllers.*;
 import com.myproyect.api.Api;
 import com.myproyect.config.CorsConfig;
 import com.myproyect.utils.DatabaseConnection;
@@ -17,6 +17,16 @@ public class Main {
         }
         Api.init();
         CorsConfig.enableCors();
+
+        new ClienteController();
+        new MesaController();
+        new ReservaController();
+        new ReservaController();
+        new CocineroController();
+        new EncargadoAseoController();
+        new MenuController();
         Api.routes();
+
     }
+
 }

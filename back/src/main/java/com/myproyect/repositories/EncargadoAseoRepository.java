@@ -28,7 +28,7 @@ public class EncargadoAseoRepository {
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new EncargadoAseo(rs.getInt("id"), rs.getInt("id"), rs.getString("zona asignada")));
+                list.add(new EncargadoAseo(rs.getInt("id"), rs.getInt("empleadoId"), rs.getString("zona_asignada")));
             }
         }
         return list;

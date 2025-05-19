@@ -9,8 +9,8 @@ import com.myproyect.services.EmpleadoService;
 public class EmpleadoController {
     private final EmpleadoService empleadoService;
 
-    public EmpleadoController(EmpleadoService empleadoService) {
-        this.empleadoService = empleadoService;
+    public EmpleadoController() {
+        this.empleadoService = new EmpleadoService(null);
     }
 
     public void crear(Empleado empleado) throws SQLException {

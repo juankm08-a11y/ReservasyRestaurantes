@@ -13,13 +13,15 @@ public class ClienteRepository {
     }
 
     public void insertar(Cliente c) throws SQLException {
-        String sql = "INSERT INTO clientes(nombre,cedula, telefono,email) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO clientes(nombre,cedula, telefono,email)"
+                + "VALUES ('Juan Perez','00000000','999299292','juan0392929@example.com') ";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getCedula());
             stmt.setString(3, c.getTelefono());
             stmt.setString(4, c.getEmail());
             stmt.executeUpdate();
+            System.out.println("Cliente insertado correctamente");
         }
 
     }
@@ -42,7 +44,7 @@ public class ClienteRepository {
     }
 
     public Cliente getById(int id) throws SQLException {
-        String sql = "SELECT * FROM  WHERE id=?";
+        String sql = "SELECT * FROM clientes WHERE id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             try (ResultSet rs = st.executeQuery()) {
@@ -74,7 +76,7 @@ public class ClienteRepository {
     }
 
     public void eliminar(int id) throws SQLException {
-        String sql = "DELETE clientes WHERE id=?";
+        String sql = "DELETE FROM clientes WHERE id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             st.executeUpdate();
