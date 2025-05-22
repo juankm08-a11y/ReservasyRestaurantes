@@ -12,7 +12,12 @@ public class ClienteRepository {
         this.connection = connection;
     }
 
+    @Override
     public void save(Cliente c) throws SQLException {
+        String sql = "INSERT INTO clientes(nombre,cedula,telefono,email) VALUES(?,?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, c.getNombre());
+        }
     }
 
     public List<Cliente> obtenerTodos() throws SQLException {
