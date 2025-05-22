@@ -40,7 +40,7 @@ export default function FormularioMesas() {
         <div>
           <label className="block font-bold mb-1 text-black">Numero</label>
           <input
-            type="number"
+            type="text"
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
           />
@@ -58,7 +58,7 @@ export default function FormularioMesas() {
           <input
             type="text"
             value={ubicacion}
-            onChange={(e) => setCapacidad(e.target.value)}
+            onChange={(e) => setUbicacion(e.target.value)}
           />
         </div>
         <div className="flex flex-col md:flex-row gap-4 mt-4">

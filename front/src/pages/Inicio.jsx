@@ -9,6 +9,7 @@ export default function Inicio() {
           <Link to="/registro-clientes">Clientes</Link>
           <Link to="/registro-mesas">Mesas</Link>
           <Link to="/registro-reservas">Reservas</Link>
+          <Link to="/consultas-avanzadas">Consultas Avanzadas</Link>
         </ul>
       </nav>
     </div>

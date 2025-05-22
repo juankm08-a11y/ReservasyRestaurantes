@@ -6,6 +6,7 @@ import Inicio from "./pages/Inicio";
 import RegistroClientes from "./pages/RegistroClientes";
 import RegistroMesas from "./pages/RegistroMesas";
 import RegistroReservas from "./pages/RegistroReservas";
+import ConsultasAvanzadas from "./pages/ConsultasAvanzadas";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -21,6 +22,7 @@ function App() {
         <Route path="/registro-clientes" element={<RegistroClientes />} />
         <Route path="/registro-mesas" element={<RegistroMesas />} />
         <Route path="/registro-reservas" element={<RegistroReservas />} />
+        <Route path="/consultas-avanzadas" element={<ConsultasAvanzadas />} />
       </Routes>
     </div>
   );

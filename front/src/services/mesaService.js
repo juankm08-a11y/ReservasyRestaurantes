@@ -6,7 +6,7 @@ export const getMesas = () => {
 };
 
 export const escogerMesa = (datos) => {
-  return axios.post(`${API_BASE_URL}/crear-mesas`, datos);
+  return axios.post(`${API_BASE_URL}/escoger-mesas`, datos);
 };
 
 export const actualizarMesa = (datos) => {
