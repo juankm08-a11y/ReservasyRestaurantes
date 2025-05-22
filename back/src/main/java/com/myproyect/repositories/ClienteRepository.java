@@ -17,6 +17,10 @@ public class ClienteRepository {
         String sql = "INSERT INTO clientes(nombre,cedula,telefono,email) VALUES(?,?,?,?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, c.getNombre());
+            stmt.setString(2, c.getCedula());
+            stmt.setString(3, c.getTelefono());
+            stmt.setString(4, c.getEmail());
+            stmt.executeUpdate();
         }
     }
 
