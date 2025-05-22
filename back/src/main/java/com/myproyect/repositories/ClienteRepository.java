@@ -12,6 +12,9 @@ public class ClienteRepository {
         this.connection = connection;
     }
 
+    public void save(Cliente c) throws SQLException {
+    }
+
     public List<Cliente> obtenerTodos() throws SQLException {
         List<Cliente> list = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
