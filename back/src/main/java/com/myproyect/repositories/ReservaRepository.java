@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.myproyect.models.EstadoCount;
 import com.myproyect.models.Reserva;
 
 public class ReservaRepository {
@@ -161,42 +160,6 @@ public class ReservaRepository {
             }
         }
         return out;
-    }
-
-    public void actualizarEstadoCount() throws SQLException {
-        List<EstadoCount> counts = new ArrayList<>();
-        String q = "SELECT estado, COUNT(*) AS total FROM reservas GROUP BY estado";
-        try (Statement st = connection.createStatement();
-                ResultSet rs = st.executeQuery(q)) {
-            while (rs.next()) {
-                counts.add(new EstadoCount(rs.getString("estado"), rs.getInt("total")));
-            }
-        }
-        try (Statement st = connection.createStatement()) {
-            st.execute("TRUNCATE TABLE estado_count");
-        }
-        String ins = "INSERT INTO estado_count(estado,total) VALUES(?,?)";
-        try (PreparedStatement pst = connection.prepareStatement(ins)) {
-            for (EstadoCount ec : counts) {
-                pst.setString(1, ec.getEstado());
-                pst.setInt(2, ec.getTotal());
-                pst.executeUpdate();
-            }
-        }
-    }
-
-    public List<EstadoCount> obtenerEstadoCount() throws SQLException {
-        List<EstadoCount> out = new ArrayList<>();
-        String sql = "SELECT * FROM estado_count";
-        try (Statement st = connection.createStatement();
-                ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                out.add(new EstadoCount(rs.getString("estado"), rs.getInt("total")));
-            }
-        }
-
-        return out;
-
     }
 
 }

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static String url = "jdbc:mysql://localhost:3306/reservasyrestaurantes";
+    private static String url = "jdbc:mysql://localhost:3306/reservas_restaurantes";
     private static String user = "root";
     private static String pass = "";
     private static Connection myConn;

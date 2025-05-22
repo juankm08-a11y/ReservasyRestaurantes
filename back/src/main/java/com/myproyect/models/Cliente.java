@@ -1,7 +1,7 @@
 package com.myproyect.models;
 
 public class Cliente {
-    private int id;
+    private int cliente_id;
     private String nombre;
     private String cedula;
     private String telefono;
@@ -10,20 +10,20 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(int id, String nombre, String cedula, String telefono, String email) {
-        this.id = id;
+    public Cliente(int cliente_id, String nombre, String cedula, String telefono, String email) {
+        this.cliente_id = cliente_id;
         this.nombre = nombre;
         this.cedula = cedula;
         this.telefono = telefono;
         this.email = email;
     }
 
-    public int getId() {
-        return id;
+    public int getCliente_Id() {
+        return cliente_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCliente_Id(int cliente_id) {
+        this.cliente_id = cliente_id;
     }
 
     public String getNombre() {
