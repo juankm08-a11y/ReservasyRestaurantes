@@ -12,20 +12,6 @@ public class ClienteRepository {
         this.connection = connection;
     }
 
-    public void insertar(Cliente c) throws SQLException {
-        String sql = "INSERT INTO clientes(nombre,cedula, telefono,email)"
-                + "VALUES ('Juan Perez','00000000','999299292','juan0392929@example.com') ";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, c.getNombre());
-            stmt.setString(2, c.getCedula());
-            stmt.setString(3, c.getTelefono());
-            stmt.setString(4, c.getEmail());
-            stmt.executeUpdate();
-            System.out.println("Cliente insertado correctamente");
-        }
-
-    }
-
     public List<Cliente> obtenerTodos() throws SQLException {
         List<Cliente> list = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
