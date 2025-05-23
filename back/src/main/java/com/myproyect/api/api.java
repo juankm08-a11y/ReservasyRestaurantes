@@ -3,7 +3,7 @@ package com.myproyect.api;
 import static spark.Spark.*;
 import com.myproyect.utils.DatabaseConnection;
 
-public class api {
+public class Api {
     public static void init() {
         port(8080);
     }
