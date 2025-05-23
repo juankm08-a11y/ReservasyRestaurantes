@@ -1,11 +1,13 @@
 package com.myproyect.repositories;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.myproyect.models.Cliente;
 
 public class ClienteRepository implements Repository<Cliente> {
+
     private final Connection connection;
 
     public ClienteRepository(Connection connection) {
@@ -14,47 +16,47 @@ public class ClienteRepository implements Repository<Cliente> {
 
     @Override
     public void save(Cliente c) throws SQLException {
-        String sql = "INSERT INTO clientes(nombre, cedula, telefono, email) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, c.getNombre());
-            stmt.setString(2, c.getCedula());
-            stmt.setString(3, c.getTelefono());
-            stmt.setString(4, c.getEmail());
-            stmt.executeUpdate();
+        String sql = "INSERT INTO cliente(nombre, cedula, telefono, email) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, c.getNombre());
+            st.setString(2, c.getCedula());
+            st.setString(3, c.getTelefono());
+            st.setString(4, c.getEmail());
+            st.executeUpdate();
         }
     }
 
+    @Override
     public List<Cliente> findAll() throws SQLException {
-        List<Cliente> list = new ArrayList<>();
-        String sql = "SELECT * FROM clientes";
-        try (Statement st = connection.createStatement();
-                ResultSet rs = st.executeQuery(sql)) {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT * FROM cliente";
+        try (Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Cliente(
-                        rs.getInt("id"),
+                clientes.add(new Cliente(
+                        rs.getInt("cliente_id"),
                         rs.getString("nombre"),
                         rs.getString("cedula"),
                         rs.getString("telefono"),
                         rs.getString("email")));
             }
         }
-        return list;
+        return clientes;
     }
 
     @Override
     public Cliente getById(Integer id) throws SQLException {
-        String sql = "SELECT * FROM clientes WHERE cliente_id = ?";
+        String sql = "SELECT * FROM cliente WHERE cliente_id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
-                    Cliente c = new Cliente();
-                    c.setCliente_Id(rs.getInt("cliente_id"));
-                    c.setNombre(rs.getString("nombre"));
-                    c.setCedula(rs.getString("cedula"));
-                    c.setTelefono(rs.getString("telefono"));
-                    c.setEmail(rs.getString("email"));
-                    return c;
+                    return new Cliente(
+                            rs.getInt("cliente_id"),
+                            rs.getString("nombre"),
+                            rs.getString("cedula"),
+                            rs.getString("telefono"),
+                            rs.getString("email"));
                 }
             }
         }
@@ -63,23 +65,10 @@ public class ClienteRepository implements Repository<Cliente> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM clientes WHERE cliente_id = ?";
+        String sql = "DELETE FROM cliente WHERE cliente_id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             st.executeUpdate();
         }
     }
-
-    public void actualizar(Cliente c) throws SQLException {
-        String sql = "UPDATE clientes SET nombre = ?, cedula = ?, telefono = ?, email = ? WHERE cliente_id = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, c.getNombre());
-            st.setString(2, c.getCedula());
-            st.setString(3, c.getTelefono());
-            st.setString(4, c.getEmail());
-            st.setInt(5, c.getCliente_Id());
-            st.executeUpdate();
-        }
-    }
-
 }

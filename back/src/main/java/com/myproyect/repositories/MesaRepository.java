@@ -15,29 +15,28 @@ public class MesaRepository implements Repository<Mesa> {
     }
 
     @Override
-    public void save(Mesa mesa) throws SQLException {
-        String sql = "INSERT INTO mesas(numero, capacidad, ubicacion) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, mesa.getNumero());
-            stmt.setInt(2, mesa.getCapacidad());
-            stmt.setString(3, mesa.getUbicacion());
-            stmt.executeUpdate();
+    public void save(Mesa m) throws SQLException {
+        String sql = "INSERT INTO mesa(numero, capacidad, ubicacion) VALUES (?, ?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, m.getNumero());
+            st.setInt(2, m.getCapacidad());
+            st.setString(3, m.getUbicacion());
+            st.executeUpdate();
         }
     }
 
     @Override
     public List<Mesa> findAll() throws SQLException {
         List<Mesa> mesas = new ArrayList<>();
-        String sql = "SELECT * FROM mesas";
+        String sql = "SELECT * FROM mesa";
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Mesa mesa = new Mesa();
-                mesa.setId(rs.getInt("id"));
-                mesa.setNumero(rs.getInt("numero"));
-                mesa.setCapacidad(rs.getInt("capacidad"));
-                mesa.setUbicacion(rs.getString("ubicacion"));
-                mesas.add(mesa);
+                mesas.add(new Mesa(
+                        rs.getInt("mesa_id"),
+                        rs.getInt("numero"),
+                        rs.getInt("capacidad"),
+                        rs.getString("ubicacion")));
             }
         }
         return mesas;
@@ -45,17 +44,16 @@ public class MesaRepository implements Repository<Mesa> {
 
     @Override
     public Mesa getById(Integer id) throws SQLException {
-        String sql = "SELECT * FROM mesas WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+        String sql = "SELECT * FROM mesa WHERE mesa_id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
-                    Mesa mesa = new Mesa();
-                    mesa.setId(rs.getInt("id"));
-                    mesa.setNumero(rs.getInt("numero"));
-                    mesa.setCapacidad(rs.getInt("capacidad"));
-                    mesa.setUbicacion(rs.getString("ubicacion"));
-                    return mesa;
+                    return new Mesa(
+                            rs.getInt("mesa_id"),
+                            rs.getInt("numero"),
+                            rs.getInt("capacidad"),
+                            rs.getString("ubicacion"));
                 }
             }
         }
@@ -64,21 +62,10 @@ public class MesaRepository implements Repository<Mesa> {
 
     @Override
     public void delete(Integer id) throws SQLException {
-        String sql = "DELETE FROM mesas WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
-    }
-
-    public void actualizar(Mesa mesa) throws SQLException {
-        String sql = "UPDATE mesas SET numero = ?, capacidad = ?, ubicacion = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, mesa.getNumero());
-            stmt.setInt(2, mesa.getCapacidad());
-            stmt.setString(3, mesa.getUbicacion());
-            stmt.setInt(4, mesa.getId());
-            stmt.executeUpdate();
+        String sql = "DELETE FROM mesa WHERE mesa_id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            st.executeUpdate();
         }
     }
 }
