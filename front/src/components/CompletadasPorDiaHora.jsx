@@ -1,0 +1,31 @@
+import React, { useEffect, useState } from "react";
+import { getReservasCompletadasPorDiaHora } from "../services/api";
+
+const CompletadasPorDiaHora = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getReservasCompletadasPorDiaHora()
+      .then((res) => setData(res.data))
+      .catch((err) => console.error("Error:", err));
+  }, []);
+
+  return (
+    <div>
+      <h2>Reservas Completadas por Día y Hora</h2>
+      <ul>
+        {Array.isArray(data) && data.length > 0 ? (
+          data.map((item, i) => (
+            <li key={i}>
+              {typeof item === "object" ? JSON.stringify(item) : item}
+            </li>
+          ))
+        ) : (
+          <li>No hay datos disponibles</li>
+        )}
+      </ul>
+    </div>
+  );
+};
+
+export default CompletadasPorDiaHora;
