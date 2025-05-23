@@ -7,10 +7,13 @@ import RegistroClientes from "./pages/RegistroClientes";
 import RegistroMesas from "./pages/RegistroMesas";
 import RegistroReservas from "./pages/RegistroReservas";
 import ConsultasAvanzadas from "./pages/ConsultasAvanzadas";
+import CompletadasPorDiaHora from "./components/CompletadasPorDiaHora";
+import ReservasPorMesaHora from "./components/ReservasPorMesaHora";
+import ReservasCanceladasUltimoTrimestre from "./components/ReservasCanceladasUltimoTrimestre";
+import ClientesFrecuentes from "./components/ClientesFrecuentes";
+import PorcentajesCanceladas from "./components/PorcentajesCanceladas";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="bg-[#7fe77f]">
       <h1 className="flex justify-center items-center">
@@ -23,6 +26,26 @@ function App() {
         <Route path="/registro-mesas" element={<RegistroMesas />} />
         <Route path="/registro-reservas" element={<RegistroReservas />} />
         <Route path="/consultas-avanzadas" element={<ConsultasAvanzadas />} />
+        <Route
+          path="/consultas/reservas-dia-hora"
+          element={<CompletadasPorDiaHora />}
+        />
+        <Route
+          path="/consultas/reservas-mesa-hora"
+          element={<ReservasPorMesaHora />}
+        />
+        <Route
+          path="/consultas/canceladas-ultimos-3-meses"
+          element={<ReservasCanceladasUltimoTrimestre />}
+        />
+        <Route
+          path="/consultas/clientes-frecuentes"
+          element={<ClientesFrecuentes />}
+        />
+        <Route
+          path="/consultas/porcentaje-canceladas"
+          element={<PorcentajesCanceladas />}
+        />
       </Routes>
     </div>
   );

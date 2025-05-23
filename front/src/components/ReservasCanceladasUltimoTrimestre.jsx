@@ -9,7 +9,7 @@ export default function ConsultasAvanzadas() {
       label: "Reservas por Mesa y Hora",
     },
     {
-      path: "/consultas/canceladas-ultimos-3-meses",
+      path: "/consultas/cancelzadas-ultimos-3-meses",
       label: "Canceladas Últimos 3 Meses",
     },
     { path: "/consultas/clientes-frecuentes", label: "Clientes Frecuentes" },
@@ -23,8 +23,8 @@ export default function ConsultasAvanzadas() {
     <div>
       <h1>Consultas Avanzadas</h1>
       <ul>
-        {links.map((link, i) => (
-          <li key={i}>
+        {links.map((link) => (
+          <li key={link.path}>
             <Link to={link.path}>{link.label}</Link>
           </li>
         ))}

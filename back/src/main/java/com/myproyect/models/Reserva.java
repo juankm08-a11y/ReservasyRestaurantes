@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Reserva {
-    private int id;
+    private int reservaId;
     private int clienteId;
     private int mesaId;
     private LocalDate fecha;
@@ -14,8 +14,8 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int id, int clienteId, int mesaId, LocalDate fecha, LocalTime hora, String estado) {
-        this.id = id;
+    public Reserva(int reservaId, int clienteId, int mesaId, LocalDate fecha, LocalTime hora, String estado) {
+        this.reservaId = reservaId;
         this.clienteId = clienteId;
         this.mesaId = mesaId;
         this.fecha = fecha;
@@ -23,12 +23,12 @@ public class Reserva {
         this.estado = estado;
     }
 
-    public int getId() {
-        return id;
+    public int getReservaId() {
+        return reservaId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReservaId(int reservaId) {
+        this.reservaId = reservaId;
     }
 
     public int getClienteId() {
@@ -70,5 +70,4 @@ public class Reserva {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
 }
