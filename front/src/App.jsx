@@ -9,8 +9,6 @@ import RegistroReservas from "./pages/RegistroReservas";
 import ConsultasAvanzadas from "./pages/ConsultasAvanzadas";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="bg-[#7fe77f]">
       <h1 className="flex justify-center items-center">
@@ -22,7 +20,7 @@ function App() {
         <Route path="/registro-clientes" element={<RegistroClientes />} />
         <Route path="/registro-mesas" element={<RegistroMesas />} />
         <Route path="/registro-reservas" element={<RegistroReservas />} />
-        <Route path="/consultas-avanzadas" element={<ConsultasAvanzadas />} />
+        <Route path="/consultas/*" element={<ConsultasAvanzadas />} />
       </Routes>
     </div>
   );

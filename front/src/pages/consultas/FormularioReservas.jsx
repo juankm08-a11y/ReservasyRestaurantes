@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { crearReserva } from "../services/reservaService";
+import { crearReserva } from "../../services/reservaService";
 export default function FormularioReservas() {
   const [cliente_id, setCliente_Id] = useState("");
   const [mesa_id, setMesa_id] = useState("");

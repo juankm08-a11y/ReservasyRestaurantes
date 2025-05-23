@@ -1,5 +1,5 @@
 import React from "react";
-import FormularioReservas from "../components/FormularioReservas";
+import FormularioReservas from "./consultas/FormularioReservas";
 
 export default function RegistroReservas() {
   return (

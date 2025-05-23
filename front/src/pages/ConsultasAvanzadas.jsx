@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 
 export default function ConsultasAvanzadas() {
   const links = [
-    { path: "/consultas/reservas-dia-hora", label: "Reservas por Día y Hora" },
+    { path: "/reservas-dia-hora", label: "Reservas por Día y Hora" },
     {
-      path: "/consultas/reservas-mesa-hora",
+      path: "/reservas-mesa-hora",
       label: "Reservas por Mesa y Hora",
     },
     {
-      path: "/consultas/canceladas-ultimos-3-meses",
+      path: "/canceladas-ultimos-3-meses",
       label: "Canceladas Últimos 3 Meses",
     },
-    { path: "/consultas/clientes-frecuentes", label: "Clientes Frecuentes" },
+    { path: "/clientes-frecuentes", label: "Clientes Frecuentes" },
     {
-      path: "/consultas/porcentaje-canceladas",
+      path: "/porcentaje-canceladas",
       label: "Porcentaje Canceladas",
     },
   ];

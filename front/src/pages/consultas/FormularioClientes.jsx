@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { crearCliente } from "../services/clienteService";
+import { crearCliente } from "../../services/clienteService";
 export default function FormularioClientes() {
   const [nombre, setNombre] = useState("");
   const [cedula, setCedula] = useState("");

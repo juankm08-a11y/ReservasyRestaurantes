@@ -1,5 +1,5 @@
 import React from "react";
-import FormularioClientes from "../components/FormularioClientes";
+import FormularioClientes from "./consultas/FormularioClientes";
 
 export default function RegistroClientes() {
   return (
