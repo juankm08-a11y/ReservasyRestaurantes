@@ -7,6 +7,9 @@ import RegistroClientes from "./pages/RegistroClientes";
 import RegistroMesas from "./pages/RegistroMesas";
 import RegistroReservas from "./pages/RegistroReservas";
 import ConsultasAvanzadas from "./pages/ConsultasAvanzadas";
+import ReservasPorDiaHora from "./pages/consultas/ReservasPorDiaHora";
+import ReservasCanceladasUltimoTrimestre from "./pages/consultas/ReservasCanceladasUltimoTrimestre";
+import ClientesFrecuentes from "./pages/consultas/ClientesFrecuentes";
 
 function App() {
   return (
@@ -20,7 +23,14 @@ function App() {
         <Route path="/registro-clientes" element={<RegistroClientes />} />
         <Route path="/registro-mesas" element={<RegistroMesas />} />
         <Route path="/registro-reservas" element={<RegistroReservas />} />
-        <Route path="/consultas/*" element={<ConsultasAvanzadas />} />
+        <Route path="/consultas" element={<ConsultasAvanzadas />}>
+          <Route path="reservas-dia-hora" element={<ReservasPorDiaHora />} />
+          <Route
+            path="canceladas-ultimos-3-meses"
+            element={<ReservasCanceladasUltimoTrimestre />}
+          />
+          <Route path="clientes-frecuentes" element={<ClientesFrecuentes />} />
+        </Route>
       </Routes>
     </div>
   );

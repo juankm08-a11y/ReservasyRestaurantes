@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { escogerMesa } from "../../services/mesaService";
+import { escogerMesa } from "../services/mesaService";
 export default function FormularioMesas() {
   const [numero, setNumero] = useState("");
   const [capacidad, setCapacidad] = useState("");

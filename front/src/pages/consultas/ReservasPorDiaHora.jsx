@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getReservasCompletadasPorDiaHora } from "../services/api";
+import { getReservasCompletadasPorDiaHora } from "../../services/consultasavanzadasServices";
 
-const CompletadasPorDiaHora = () => {
+const ReservasPorDiaHora = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -28,4 +28,4 @@ const CompletadasPorDiaHora = () => {
   );
 };
 
-export default CompletadasPorDiaHora;
+export default ReservasPorDiaHora;

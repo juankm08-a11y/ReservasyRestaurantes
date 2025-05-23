@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getReservasPorMesaHora } from "../services/api";
+import { getReservasPorMesaHora } from "../../services/consultasavanzadasServices";
 
 const ReservasPorMesaHora = () => {
   const [data, setData] = useState([]);

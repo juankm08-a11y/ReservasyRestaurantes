@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCanceladasUltimos3Meses } from "../services/api";
+import { getCanceladasUltimos3Meses } from "../../services/consultasavanzadasServices";
 
 const ReservasCanceladasUltimoTrimestre = () => {
   const [reservas, setReservas] = useState([]);
