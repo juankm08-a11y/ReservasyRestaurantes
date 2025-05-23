@@ -11,7 +11,7 @@ const CompletadasPorDiaHora = () => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full h-full flex justify-center items-center p-4">
       <h2>Reservas Completadas por Día y Hora</h2>
       <ul>
         {Array.isArray(data) && data.length > 0 ? (
