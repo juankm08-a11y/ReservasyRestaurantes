@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.myproyect.models.Cliente;
 
-public class ClienteRepository {
+public class ClienteRepository implements Repository<Cliente> {
     private final Connection connection;
 
     public ClienteRepository(Connection connection) {
@@ -14,7 +14,7 @@ public class ClienteRepository {
 
     @Override
     public void save(Cliente c) throws SQLException {
-        String sql = "INSERT INTO clientes(nombre,cedula,telefono,email) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO clientes(nombre, cedula, telefono, email) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, c.getNombre());
             stmt.setString(2, c.getCedula());
@@ -24,7 +24,7 @@ public class ClienteRepository {
         }
     }
 
-    public List<Cliente> obtenerTodos() throws SQLException {
+    public List<Cliente> findAll() throws SQLException {
         List<Cliente> list = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
         try (Statement st = connection.createStatement();
@@ -41,45 +41,45 @@ public class ClienteRepository {
         return list;
     }
 
-    public Cliente getById(int id) throws SQLException {
-        String sql = "SELECT * FROM clientes WHERE id=?";
+    @Override
+    public Cliente getById(Integer id) throws SQLException {
+        String sql = "SELECT * FROM clientes WHERE cliente_id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
-                    return new Cliente(
-                            rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getString("cedula"),
-                            rs.getString("telefono"),
-                            rs.getString("email"));
-
+                    Cliente c = new Cliente();
+                    c.setCliente_Id(rs.getInt("cliente_id"));
+                    c.setNombre(rs.getString("nombre"));
+                    c.setCedula(rs.getString("cedula"));
+                    c.setTelefono(rs.getString("telefono"));
+                    c.setEmail(rs.getString("email"));
+                    return c;
                 }
             }
         }
-        ;
-
         return null;
     }
 
+    @Override
+    public void delete(Integer id) throws SQLException {
+        String sql = "DELETE FROM clientes WHERE cliente_id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            st.executeUpdate();
+        }
+    }
+
     public void actualizar(Cliente c) throws SQLException {
-        String sql = "UPDATE clientes SET nombre=?, cedula=?, telefono=?, email=? WHERE id=?";
+        String sql = "UPDATE clientes SET nombre = ?, cedula = ?, telefono = ?, email = ? WHERE cliente_id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, c.getNombre());
             st.setString(2, c.getCedula());
             st.setString(3, c.getTelefono());
             st.setString(4, c.getEmail());
+            st.setInt(5, c.getCliente_Id());
             st.executeUpdate();
         }
-    }
-
-    public void eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM clientes WHERE id=?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, id);
-            st.executeUpdate();
-        }
-
     }
 
 }
