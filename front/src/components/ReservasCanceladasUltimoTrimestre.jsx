@@ -11,7 +11,7 @@ const ReservasCanceladasUltimoTrimestre = () => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full h-full flex justify-center items-center p-4">
       <h2>Reservas Canceladas Últimos 3 Meses</h2>
       <ul>
         {reservas.map((r, i) => (
