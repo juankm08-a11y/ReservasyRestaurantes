@@ -11,8 +11,8 @@ public class Main {
         try (Connection myConnection = DatabaseConnection.getInstance()) {
             System.out.println("Conexion exitosa");
         } catch (Exception e) {
-            System.out.println("Conexion fallida" + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+
         }
         Api.init();
         CorsConfig.enableCors();

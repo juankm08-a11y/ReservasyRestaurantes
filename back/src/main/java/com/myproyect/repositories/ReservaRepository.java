@@ -14,7 +14,7 @@ public class ReservaRepository {
     }
 
     public void insertar(Reserva r) throws SQLException {
-        String sql = "INSERT INTO reservas(cliente_id,mesa_id,fecha,hora,estado) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO reserva(cliente_id,mesa_id,fecha,hora,estado) VALUES(?,?,?,?,?)";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, r.getClienteId());
             st.setInt(2, r.getMesaId());
@@ -27,13 +27,13 @@ public class ReservaRepository {
 
     public List<Reserva> obtenerTodos() throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
-        String sql = "SELECT * FROM mesas";
+        String sql = "SELECT * FROM mesa";
         try (
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 reservas.add(new Reserva(
-                        rs.getInt("id"),
+                        rs.getInt("reserva_id"),
                         rs.getInt("cliente_id"),
                         rs.getInt("mesa_id"),
                         rs.getDate("fecha").toLocalDate(),
@@ -46,12 +46,12 @@ public class ReservaRepository {
 
     public List<Reserva> obtenerReservosTodos() throws SQLException {
         List<Reserva> list = new ArrayList<>();
-        String sql = "SELECT * FROM reservas";
+        String sql = "SELECT * FROM reserva";
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Reserva(
-                        rs.getInt("id"),
+                        rs.getInt("reserva_id"),
                         rs.getInt("cliente_id"),
                         rs.getInt("mesa_id"),
                         rs.getDate("fecha").toLocalDate(),
@@ -63,13 +63,13 @@ public class ReservaRepository {
     }
 
     public Reserva getById(int id) throws SQLException {
-        String sql = "SELECT * FROM reservas WHERE id=?";
+        String sql = "SELECT * FROM reserva WHERE id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     return new Reserva(
-                            rs.getInt("id"),
+                            rs.getInt("reserva_id"),
                             rs.getInt("cliente_id"),
                             rs.getInt("mesa_id"),
                             rs.getDate("fecha").toLocalDate(),
@@ -82,7 +82,7 @@ public class ReservaRepository {
     }
 
     public void actualizar(Reserva r) throws SQLException {
-        String sql = "UPDATE reservas SET cliente_id=?, mesa_id=?, fecha=?, hora=?, estado=? WHERE id=?";
+        String sql = "UPDATE reserva SET cliente_id=?, mesa_id=?, fecha=?, hora=?, estado=? WHERE id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, r.getClienteId());
             st.setInt(2, r.getMesaId());
@@ -94,7 +94,7 @@ public class ReservaRepository {
     }
 
     public void eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM reservas  WHERE id=?";
+        String sql = "DELETE FROM reserva  WHERE id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             st.executeUpdate();
@@ -115,7 +115,7 @@ public class ReservaRepository {
     }
 
     public List<String> clientesFrecuentes(int minVisitas) throws SQLException {
-        String sql = "SELECT cliente_id, COUNT(*) AS total FROM reservas WHERE fecha>=CURDATE()-INTERVAL 30 DAY GROUP BY cliente_id HAVING total> ?";
+        String sql = "SELECT cliente_id, COUNT(*) AS total FROM reserva WHERE fecha>=CURDATE()-INTERVAL 30 DAY GROUP BY cliente_id HAVING total> ?";
         List<String> out = new ArrayList<>();
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, minVisitas);
@@ -131,13 +131,13 @@ public class ReservaRepository {
     }
 
     public List<Reserva> reservasCanceladasUltimoTrimestre() throws SQLException {
-        String sql = "SELECT * FROM reservas WHERE estado='Cancelada' AND fecha >= CURDATE() - INTERVAL 3 MONTH";
+        String sql = "SELECT * FROM  WHERE estado='Cancelada' AND fecha >= CURDATE() - INTERVAL 3 MONTH";
         List<Reserva> out = new ArrayList<>();
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 out.add(new Reserva(
-                        rs.getInt("id"),
+                        rs.getInt("reserva_id"),
                         rs.getInt("cliente_id"),
                         rs.getInt("mesa_id"),
                         rs.getDate("fecha").toLocalDate(),
@@ -149,7 +149,7 @@ public class ReservaRepository {
     }
 
     public List<String> horariosPopularesPorDia() throws SQLException {
-        String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total FROM reservas WHERE estado='Completada' GROUP BY dia, hora ORDER BY total DESC";
+        String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total FROM reserva WHERE estado='Completada' GROUP BY dia, hora ORDER BY total DESC";
         List<String> out = new ArrayList<>();
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
