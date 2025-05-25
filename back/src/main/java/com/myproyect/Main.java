@@ -32,7 +32,6 @@ public class Main {
             System.out.println("Mesas encontradas: " + mesas.size());
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
-
         }
         Api.init();
         CorsConfig.enableCors();

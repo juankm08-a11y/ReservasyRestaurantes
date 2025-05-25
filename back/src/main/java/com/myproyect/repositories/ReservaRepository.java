@@ -16,7 +16,7 @@ public class ReservaRepository implements Repository<Reserva> {
     @Override
     public List<Reserva> findAll() throws SQLException {
         List<Reserva> reservas = new ArrayList<>();
-        String sql = "SELECT * FROM reserva";
+        String sql = "SELECT *, DAYNAME(fecha) AS dia_nombre FROM reserva";
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
@@ -24,7 +24,8 @@ public class ReservaRepository implements Repository<Reserva> {
                         rs.getInt("reserva_id"),
                         rs.getInt("cliente_id"),
                         rs.getInt("mesa_id"),
-                        rs.getDate("fecha").toLocalDate(),
+                        rs.getString("fecha"),
+                        rs.getString("dia_nombre"),
                         rs.getTime("hora").toLocalTime(),
                         rs.getString("estado")));
             }
@@ -34,7 +35,7 @@ public class ReservaRepository implements Repository<Reserva> {
 
     @Override
     public Reserva getById(Integer id) throws SQLException {
-        String sql = "SELECT * FROM reserva WHERE reserva_id = ?";
+        String sql = "SELECT *, DAYNAME(fecha) AS dia_nombre FROM reserva WHERE reserva_id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             try (ResultSet rs = st.executeQuery()) {
@@ -43,7 +44,8 @@ public class ReservaRepository implements Repository<Reserva> {
                             rs.getInt("reserva_id"),
                             rs.getInt("cliente_id"),
                             rs.getInt("mesa_id"),
-                            rs.getDate("fecha").toLocalDate(),
+                            rs.getString("fecha"),
+                            rs.getString("dia_nombre"),
                             rs.getTime("hora").toLocalTime(),
                             rs.getString("estado"));
                 }
@@ -59,7 +61,7 @@ public class ReservaRepository implements Repository<Reserva> {
             try (PreparedStatement st = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 st.setInt(1, r.getClienteId());
                 st.setInt(2, r.getMesaId());
-                st.setDate(3, Date.valueOf(r.getFecha()));
+                st.setDate(3, Date.valueOf(r.getMes_Nombre())); // mes_nombre aquí representa fecha
                 st.setTime(4, Time.valueOf(r.getHora()));
                 st.setString(5, r.getEstado());
                 st.executeUpdate();
@@ -76,7 +78,7 @@ public class ReservaRepository implements Repository<Reserva> {
             try (PreparedStatement st = connection.prepareStatement(sql)) {
                 st.setInt(1, r.getClienteId());
                 st.setInt(2, r.getMesaId());
-                st.setDate(3, Date.valueOf(r.getFecha()));
+                st.setDate(3, Date.valueOf(r.getMes_Nombre())); // mes_nombre aquí representa fecha
                 st.setTime(4, Time.valueOf(r.getHora()));
                 st.setString(5, r.getEstado());
                 st.setInt(6, r.getReservaId());
@@ -95,7 +97,7 @@ public class ReservaRepository implements Repository<Reserva> {
     }
 
     public List<String> mesasReservadasPorHorario() throws SQLException {
-        String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas FROM reserva WHERE estado = 'Completada' GROUP BY mesa_id, hora ORDER BY total_reservas DESC";
+        String sql = "SELECT mesa_id, hora, COUNT(*) AS total FROM reserva WHERE estado = 'Completada' GROUP BY mesa_id, hora ORDER BY total DESC";
         List<String> out = new ArrayList<>();
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
@@ -124,7 +126,7 @@ public class ReservaRepository implements Repository<Reserva> {
     }
 
     public List<Reserva> reservasCanceladasUltimoTrimestre() throws SQLException {
-        String sql = "SELECT * FROM reserva WHERE estado = 'Cancelada' AND fecha >= CURDATE() - INTERVAL 3 MONTH";
+        String sql = "SELECT *, DAYNAME(fecha) AS dia_nombre FROM reserva WHERE estado = 'Cancelada' AND fecha >= CURDATE() - INTERVAL 3 MONTH";
         List<Reserva> out = new ArrayList<>();
         try (Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(sql)) {
@@ -133,7 +135,8 @@ public class ReservaRepository implements Repository<Reserva> {
                         rs.getInt("reserva_id"),
                         rs.getInt("cliente_id"),
                         rs.getInt("mesa_id"),
-                        rs.getDate("fecha").toLocalDate(),
+                        rs.getString("fecha"),
+                        rs.getString("dia_nombre"),
                         rs.getTime("hora").toLocalTime(),
                         rs.getString("estado")));
             }

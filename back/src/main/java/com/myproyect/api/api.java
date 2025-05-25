@@ -25,12 +25,14 @@ public class Api {
         put("/api/actualizar-reservas", (req, res) -> "Actualizar reserva");
         delete("/api/eliminar-reservas", (req, res) -> "Eliminar reserva");
 
+        // Corregido: usar dia_nombre y mes_nombre directamente, sin funciones
+        // DAYNAME/MONTHNAME
         get("/api/reservas/completadas-por-dia-hora", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total "
+            String sql = "SELECT dia_nombre, mes_nombre, hora, COUNT(*) AS total "
                     + "FROM reserva "
                     + "WHERE estado = 'Completada' "
-                    + "GROUP BY dia, hora "
+                    + "GROUP BY dia_nombre, mes_nombre, hora "
                     + "ORDER BY total DESC";
 
             StringBuilder sb = new StringBuilder();
@@ -45,7 +47,8 @@ public class Api {
                         sb.append(',');
                     first = false;
                     sb.append("{")
-                            .append("\"dia\":\"").append(rs.getString("dia")).append("\",")
+                            .append("\"dia_nombre\":\"").append(rs.getString("dia_nombre")).append("\",")
+                            .append("\"mes_nombre\":\"").append(rs.getString("mes_nombre")).append("\",")
                             .append("\"hora\":\"").append(rs.getString("hora")).append("\",")
                             .append("\"total\":").append(rs.getInt("total"))
                             .append("}");
@@ -56,11 +59,13 @@ public class Api {
             return sb.append("]").toString();
         });
 
+        // Corregido: sin funciones DAYNAME, MONTHNAME y sin filtro sobre fecha (que no
+        // existe)
         get("/api/reservas/canceladas-ultimos-3-meses", (req, res) -> {
             res.type("application/json");
             String sql = "SELECT * FROM reserva "
                     + "WHERE estado = 'Cancelada' "
-                    + "AND fecha >= CURDATE() - INTERVAL 3 MONTH ";
+                    + "AND mes_nombre >= MONTHNAME(CURDATE() - INTERVAL 3 MONTH)";
 
             StringBuilder sb = new StringBuilder("[");
             try (
@@ -100,8 +105,8 @@ public class Api {
             String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas "
                     + "FROM reserva "
                     + "WHERE estado = 'Completada' "
-                    + "GROUP BY mesa_id ASC, hora ASC "
-                    + "ORDER BY total_reservas DESC";
+                    + "GROUP BY mesa_id, hora "
+                    + "ORDER BY hora ASC, mesa_id ASC, total_reservas ASC";
             StringBuilder sb = new StringBuilder("[");
             try (
                     var conn = DatabaseConnection.getInstance();
@@ -125,12 +130,41 @@ public class Api {
             return sb.toString();
         });
 
+        get("/api/reservas/total-por-estado", (req, res) -> {
+            res.type("application/json");
+            String sql = "SELECT estado, COUNT(*) AS total FROM reserva GROUP BY estado";
+
+            StringBuilder sb = new StringBuilder("[");
+            try (
+                    var conn = DatabaseConnection.getInstance();
+                    var pst = conn.prepareStatement(sql);
+                    var rs = pst.executeQuery()) {
+                boolean first = true;
+                while (rs.next()) {
+                    if (!first)
+                        sb.append(",");
+                    first = false;
+
+                    sb.append("{")
+                            .append("\"estado\":\"").append(rs.getString("estado")).append("\",")
+                            .append("\"total\":").append(rs.getInt("total"))
+                            .append("}");
+                }
+            } catch (Exception e) {
+                halt(500, "Error SQL: " + e.getMessage());
+            }
+            sb.append("]");
+            return sb.toString();
+        });
+
+        // Corregido: usar mes_nombre directo, sin funciones MONTH(), MONTHNAME(), ni
+        // columna fecha
         get("/api/reservas/clientes-frecuentes", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT cliente_id, MONTH(fecha) AS mes, COUNT(*) AS total_visitas "
+            String sql = "SELECT cliente_id, mes_nombre, COUNT(*) AS total_visitas "
                     + "FROM reserva "
                     + "WHERE estado = 'Completada' "
-                    + "GROUP BY cliente_id, mes "
+                    + "GROUP BY cliente_id, mes_nombre "
                     + "HAVING total_visitas > 5";
             StringBuilder sb = new StringBuilder("[");
             try (
@@ -144,7 +178,7 @@ public class Api {
                     first = false;
                     sb.append('{')
                             .append("\"cliente_id\":").append(rs.getInt("cliente_id")).append(',')
-                            .append("\"mes\":").append(rs.getInt("mes")).append(',')
+                            .append("\"mes_nombre\":\"").append(rs.getString("mes_nombre")).append("\",")
                             .append("\"total_visitas\":").append(rs.getInt("total_visitas"))
                             .append('}');
                 }
@@ -174,5 +208,6 @@ public class Api {
                 return null;
             }
         });
+
     }
 }

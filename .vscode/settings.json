@@ -3,5 +3,21 @@
   "editor.tokenColorCustomizations": {
     "comments": "",
     "textMateRules": []
+  },
+  "[rocket-mvbasic]": {
+    "editor.codeLens": false
+  },
+  "files.associations": {
+    "*.php": "php",
+    "**/.rmv/config/*.json": "jsonc"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.rmv/catalog/**": true,
+    "*/_*": false
   }
 }

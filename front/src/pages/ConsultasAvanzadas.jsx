@@ -5,6 +5,7 @@ import {
   getReservasPorMesaHora,
   getClientesFrecuentes,
   getPorcentajeCanceladas,
+  getTotalPorEstado,
 } from "../services/consultasavanzadasServices";
 
 export default function ConsultasAvanzadas() {
@@ -13,7 +14,10 @@ export default function ConsultasAvanzadas() {
   const [porMesaHora, setPorMesaHora] = useState([]);
   const [clientesFrecuentes, setClientesFrecuentes] = useState([]);
   const [porcentaje, setPorcentaje] = useState(null);
+  const [data, setData] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setCargando(true);
@@ -22,34 +26,86 @@ export default function ConsultasAvanzadas() {
       getReservasCompletadasPorDiaHora(),
       getReservasPorMesaHora(),
       getClientesFrecuentes(),
-      getPorcentajeCanceladas(),
     ])
-      .then(([res1, res2, res3, res4, res5]) => {
+      .then(([res1, res2, res3, res4]) => {
         setCanceladas(res1.data);
         setPorDiaHora(res2.data);
         setPorMesaHora(res3.data);
         setClientesFrecuentes(res4.data);
-        setPorcentaje(res5.data[0]?.porcentaje_canceladas ?? null);
+        setError(null);
       })
-      .catch((err) => console.error("Error cargando datos:", err))
+      .catch((err) => {
+        console.error("Error cargando datos:", err);
+        setError("Error cargando datos de las consultas.");
+      })
       .finally(() => setCargando(false));
+  }, []);
+
+  useEffect(() => {
+    getPorcentajeCanceladas()
+      .then((response) => setPorcentaje(response.data.porcentaje_canceladas))
+      .catch((err) => console.error("Error porcentaje:", err));
+  }, []);
+
+  useEffect(() => {
+    getTotalPorEstado()
+      .then((res) => {
+        setData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
   if (cargando)
     return <p className="text-center">Cargando consultas avanzadas...</p>;
+  if (error) return <p className="text-red-600 text-center">{error}</p>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 flex flex-col items-center">
       <h1 className="text-2xl font-bold">Consultas Avanzadas</h1>
 
-      <section>
+      {/* 1. Reservas Completadas por Día y Hora */}
+      <section className="w-full max-w-xl">
         <h2 className="text-lg font-semibold">
-          1. Reservas Canceladas Últimos 3 Meses
+          1. Reservas Completadas por Día y Hora
+        </h2>
+        {porDiaHora.length === 0 ? (
+          <p>No hay reservas completadas.</p>
+        ) : (
+          <table className="w-full table-auto border-collapse border">
+            <thead>
+              <tr>
+                <th className="border px-3 py-1">Día</th>
+                <th className="border px-3 py-1">Mes</th>
+                <th className="border px-3 py-1">Hora</th>
+                <th className="border px-3 py-1">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {porDiaHora.map((r, i) => (
+                <tr key={`${r.dia_nombre}-${r.mes_nombre}-${r.hora}-${i}`}>
+                  <td className="border px-3 py-1">{r.dia_nombre}</td>
+                  <td className="border px-3 py-1">{r.mes_nombre}</td>
+                  <td className="border px-3 py-1">{r.hora}</td>
+                  <td className="border px-3 py-1">{r.total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+
+      <section className="w-full max-w-xl">
+        <h2 className="text-lg font-semibold">
+          2. Reservas Canceladas Últimos 3 Meses
         </h2>
         {canceladas.length === 0 ? (
           <p>No hay reservas canceladas recientes.</p>
         ) : (
-          <table className="table-auto border mt-2 border-collapse border-gray-300">
+          <table className="w-full table-auto border-collapse border">
             <thead>
               <tr>
                 <th className="border px-3 py-1">Reserva ID</th>
@@ -61,7 +117,13 @@ export default function ConsultasAvanzadas() {
               {canceladas.map((r) => (
                 <tr key={r.reserva_id}>
                   <td className="border px-3 py-1">{r.reserva_id}</td>
-                  <td className="border px-3 py-1">{r.fecha}</td>
+                  <td className="border px-3 py-1">
+                    {r.fecha
+                      ? `${new Date(r.fecha).toLocaleDateString()} (${
+                          r.mes_nombre
+                        })`
+                      : r.mes_nombre}
+                  </td>
                   <td className="border px-3 py-1">{r.estado}</td>
                 </tr>
               ))}
@@ -70,42 +132,29 @@ export default function ConsultasAvanzadas() {
         )}
       </section>
 
-      <section>
-        <h2 className="text-lg font-semibold">
-          2. Reservas Completadas por Día y Hora
-        </h2>
-        {porDiaHora.length === 0 ? (
-          <p>No hay reservas completadas.</p>
+      <section className="w-full max-w-xl">
+        <h2 className="text-lg font-semibold">3. Total Reservas por Estado</h2>
+        {loading ? (
+          <p>Cargando...</p>
         ) : (
-          <table className="table-auto border mt-2 border-collapse border-gray-300">
-            <thead>
-              <tr>
-                <th className="border px-3 py-1">Día</th>
-                <th className="border px-3 py-1">Hora</th>
-                <th className="border px-3 py-1">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {porDiaHora.map((r, i) => (
-                <tr key={`${r.dia}-${r.hora}-${i}`}>
-                  <td className="border px-3 py-1">{r.dia}</td>
-                  <td className="border px-3 py-1">{r.hora}</td>
-                  <td className="border px-3 py-1">{r.total}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <ul>
+            {data.map(({ estado, total }) => (
+              <li key={estado}>
+                <strong>{estado}</strong>: {total}
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 
-      <section>
+      <section className="w-full max-w-xl">
         <h2 className="text-lg font-semibold">
-          3. Mesas más Reservadas por Hora
+          4. Mesas más Reservadas por Hora
         </h2>
         {porMesaHora.length === 0 ? (
           <p>No hay datos de mesas reservadas.</p>
         ) : (
-          <table className="table-auto border mt-2 border-collapse border-gray-300">
+          <table className="w-full table-auto border-collapse border">
             <thead>
               <tr>
                 <th className="border px-3 py-1">Mesa ID</th>
@@ -114,8 +163,8 @@ export default function ConsultasAvanzadas() {
               </tr>
             </thead>
             <tbody>
-              {porMesaHora.map((r, index) => (
-                <tr key={`${r.mesa_id}-${r.hora}-${index}`}>
+              {porMesaHora.map((r, i) => (
+                <tr key={`${r.mesa_id}-${r.hora}-${i}`}>
                   <td className="border px-3 py-1">{r.mesa_id}</td>
                   <td className="border px-3 py-1">{r.hora}</td>
                   <td className="border px-3 py-1">{r.total_reservas}</td>
@@ -126,37 +175,41 @@ export default function ConsultasAvanzadas() {
         )}
       </section>
 
-      <section>
+      <section className="w-full max-w-xl">
         <h2 className="text-lg font-semibold">
-          4. Clientes con más de 5 Visitas por Mes
+          5. Clientes con más de 5 Visitas por Mes
         </h2>
-        {clientesFrecuentes.length === 0 ? (
-          <p>No hay clientes frecuentes registrados.</p>
-        ) : (
-          <table className="table-auto border mt-2 border-collapse border-gray-300">
-            <thead>
+        <table className="w-full table-auto border-collapse border">
+          <thead>
+            <tr>
+              <th className="border px-3 py-1">Cliente ID</th>
+              <th className="border px-3 py-1">Mes</th>
+              <th className="border px-3 py-1">Total Visitas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientesFrecuentes.length === 0 ? (
               <tr>
-                <th className="px-3 py-1 border">Cliente ID</th>
-                <th className="px-3 py-1 border">Mes</th>
-                <th className="px-3 py-1 border">Total Visitas</th>
+                <td colSpan={3} className="border px-3 py-1 text-center">
+                  No hay clientes frecuentes registrados.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {clientesFrecuentes.map((c, i) => (
-                <tr key={`${c.cliente_id}-${c.mes}-${i}`}>
+            ) : (
+              clientesFrecuentes.map((c, i) => (
+                <tr key={`${c.cliente_id}-${c.mes_nombre}-${i}`}>
                   <td className="border px-3 py-1">{c.cliente_id}</td>
-                  <td className="border px-3 py-1">{c.mes}</td>
+                  <td className="border px-3 py-1">{c.mes_nombre}</td>
                   <td className="border px-3 py-1">{c.total_visitas}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </section>
 
-      <section>
-        <h2 className="text-lg font-semibold">5. Porcentaje de Canceladas</h2>
-        <p className="text-xl font-bold">
+      <section className="w-full max-w-xl text-center">
+        <h2 className="text-lg font-semibold">6. Porcentaje de Canceladas</h2>
+        <p className="text-xl font-bold mt-2">
           {porcentaje !== null ? `${porcentaje.toFixed(2)}%` : "Sin datos"}
         </p>
       </section>

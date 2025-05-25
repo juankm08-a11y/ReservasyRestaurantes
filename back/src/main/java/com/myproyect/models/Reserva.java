@@ -1,24 +1,26 @@
 package com.myproyect.models;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Reserva {
     private int reservaId;
     private int clienteId;
     private int mesaId;
-    private LocalDate fecha;
+    private String mes_nombre;
+    private String dia_nombre;
     private LocalTime hora;
     private String estado;
 
     public Reserva() {
     }
 
-    public Reserva(int reservaId, int clienteId, int mesaId, LocalDate fecha, LocalTime hora, String estado) {
+    public Reserva(int reservaId, int clienteId, int mesaId, String mes_nombre, String dia_nombre, LocalTime hora,
+            String estado) {
         this.reservaId = reservaId;
         this.clienteId = clienteId;
         this.mesaId = mesaId;
-        this.fecha = fecha;
+        this.mes_nombre = mes_nombre;
+        this.dia_nombre = dia_nombre;
         this.hora = hora;
         this.estado = estado;
     }
@@ -47,12 +49,20 @@ public class Reserva {
         this.mesaId = mesaId;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+    public String getMes_Nombre() {
+        return mes_nombre;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setMes_Nombre(String mes_nombre) {
+        this.mes_nombre = mes_nombre;
+    }
+
+    public String getDia_nombre() {
+        return dia_nombre;
+    }
+
+    public void setDia_nombre(String dia_nombre) {
+        this.dia_nombre = dia_nombre;
     }
 
     public LocalTime getHora() {

@@ -18,6 +18,10 @@ export const getClientesFrecuentes = () => {
   return axios.get(`${API_BASE_URL}/reservas/clientes-frecuentes`);
 };
 
+export const getTotalPorEstado = () => {
+  return axios.get(`${API_BASE_URL}/reservas/total-por-estado`);
+};
+
 export const getPorcentajeCanceladas = () => {
   return axios.get(`${API_BASE_URL}/reservas/porcentaje-canceladas`);
 };
