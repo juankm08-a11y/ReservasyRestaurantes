@@ -27,18 +27,18 @@ public class Api {
 
         get("/api/reservas/completadas-por-dia-hora", (req, res) -> {
             res.type("application/json");
-                String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total"
-                    + "FROM reserva"
-                    + "WHERE estado = 'Completada'"
-                    + "GROUP BY dia, hora"
+            String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total "
+                    + "FROM reserva "
+                    + "WHERE estado = 'Completada' "
+                    + "GROUP BY dia, hora "
                     + "ORDER BY total DESC";
 
-               StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.append("[");
             try (
-                var conn = DatabaseConnection.getInstance();
-                var pst = conn.prepareStatement(sql);
-                var rs = pst.executeQuery()) {
+                    var conn = DatabaseConnection.getInstance();
+                    var pst = conn.prepareStatement(sql);
+                    var rs = pst.executeQuery()) {
                 boolean first = true;
                 while (rs.next()) {
                     if (!first)
@@ -58,9 +58,9 @@ public class Api {
 
         get("/api/reservas/canceladas-ultimos-3-meses", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT * FROM reserva"
-                    + "WHERE estado = 'Cancelada'"
-                    + "AND fecha >= CURDATE() - INTERVAL 3 MONTH";
+            String sql = "SELECT * FROM reserva "
+                    + "WHERE estado = 'Cancelada' "
+                    + "AND fecha >= CURDATE() - INTERVAL 3 MONTH ";
 
             StringBuilder sb = new StringBuilder("[");
             try (
@@ -97,11 +97,11 @@ public class Api {
 
         get("/api/reservas/completadas-por-mesa-hora", (req, res) -> {
             res.type("application/json");
-             String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas" +
-                    "FROM reserva" +
-                    "WHERE estado = 'Completada'" +
-                    "GROUP BY mesa_id, hora" +
-                    "ORDER BY total_reservas DESC";
+            String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas "
+                    + "FROM reserva "
+                    + "WHERE estado = 'Completada' "
+                    + "GROUP BY mesa_id ASC, hora ASC "
+                    + "ORDER BY total_reservas DESC";
             StringBuilder sb = new StringBuilder("[");
             try (
                     var conn = DatabaseConnection.getInstance();
@@ -127,11 +127,11 @@ public class Api {
 
         get("/api/reservas/clientes-frecuentes", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT cliente_id, MONTH(fecha) AS mes, COUNT(*) AS total_visitas" +
-                    "FROM reserva" +
-                    "WHERE estado = 'Completada'" +
-                    "GROUP BY cliente_id, mes" +
-                    "HAVING total_visitas > 5";
+            String sql = "SELECT cliente_id, MONTH(fecha) AS mes, COUNT(*) AS total_visitas "
+                    + "FROM reserva "
+                    + "WHERE estado = 'Completada' "
+                    + "GROUP BY cliente_id, mes "
+                    + "HAVING total_visitas > 5";
             StringBuilder sb = new StringBuilder("[");
             try (
                     var conn = DatabaseConnection.getInstance();
@@ -157,10 +157,9 @@ public class Api {
 
         get("/api/reservas/porcentaje-canceladas", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT " +
-                    "(SELECT COUNT(*) FROM reserva WHERE estado = 'Cancelada') * 100.0 / COUNT(*) AS porcentaje_canceladas"
-                    +
-                    "FROM reserva";
+            String sql = "SELECT "
+                    + "(SELECT COUNT(*) FROM reserva WHERE estado = 'Cancelada') * 100.0 / COUNT(*) AS porcentaje_canceladas "
+                    + "FROM reserva";
             try (var conn = DatabaseConnection.getInstance();
                     var pst = conn.prepareStatement(sql);
                     var rs = pst.executeQuery()) {
