@@ -29,11 +29,15 @@ export default function ConsultasAvanzadas() {
         setPorDiaHora(res2.data);
         setPorMesaHora(res3.data);
         setClientesFrecuentes(res4.data);
+<<<<<<< HEAD
         const pct =
           res5.data.porcentaje_canceladas ??
           res5.data[0]?.porcentaje_canceladas ??
           null;
         setPorcentaje(pct);
+=======
+        setPorcentaje(res5.data[0]?.porcentaje_canceladas ?? null);
+>>>>>>> e861dfb425c81da3c70655e735044c3c15cd8507
       })
       .catch((err) => console.error("Error cargando datos:", err))
       .finally(() => setCargando(false));
@@ -50,6 +54,7 @@ export default function ConsultasAvanzadas() {
         <h2 className="text-lg font-semibold">
           1. Reservas Canceladas Últimos 3 Meses
         </h2>
+<<<<<<< HEAD
         {canceladas.length === 0 ? (
           <p>No hay reservas canceladas recientes.</p>
         ) : (
@@ -72,12 +77,26 @@ export default function ConsultasAvanzadas() {
             </tbody>
           </table>
         )}
+=======
+        <ul className="list-disc ml-6">
+          {canceladas.length === 0 ? (
+            <li>No hay reservas canceladas recientes.</li>
+          ) : (
+            canceladas.map((r) => (
+              <li key={r.reserva_id}>
+                {`ID: ${r.reserva_id} - Fecha: ${r.fecha} - Estado: ${r.estado}`}
+              </li>
+            ))
+          )}
+        </ul>
+>>>>>>> e861dfb425c81da3c70655e735044c3c15cd8507
       </section>
 
       <section>
         <h2 className="text-lg font-semibold">
           2. Reservas Completadas por Día y Hora
         </h2>
+<<<<<<< HEAD
         {porDiaHora.length === 0 ? (
           <p>No hay reservas completadas.</p>
         ) : (
@@ -100,12 +119,24 @@ export default function ConsultasAvanzadas() {
             </tbody>
           </table>
         )}
+=======
+        <ul className="list-disc ml-6">
+          {porDiaHora.length === 0 ? (
+            <li>No hay reservas completadas.</li>
+          ) : (
+            porDiaHora.map((r, i) => (
+              <li key={i}>{`${r.dia} - ${r.hora} - Total: ${r.total}`}</li>
+            ))
+          )}
+        </ul>
+>>>>>>> e861dfb425c81da3c70655e735044c3c15cd8507
       </section>
 
       <section>
         <h2 className="text-lg font-semibold">
           3. Mesas más Reservadas por Hora
         </h2>
+<<<<<<< HEAD
         {porMesaHora.length === 0 ? (
           <p>No hay datos de mesas reservadas.</p>
         ) : (
@@ -128,6 +159,19 @@ export default function ConsultasAvanzadas() {
             </tbody>
           </table>
         )}
+=======
+        <ul className="list-disc ml-6">
+          {porMesaHora.length === 0 ? (
+            <li>No hay datos de mesas reservadas.</li>
+          ) : (
+            porMesaHora.map((r) => (
+              <li key={r.reserva_id}>
+                {`Mesa ${r.mesa_id} - Hora: ${r.hora} - Reservas: ${r.total_reservas}`}
+              </li>
+            ))
+          )}
+        </ul>
+>>>>>>> e861dfb425c81da3c70655e735044c3c15cd8507
       </section>
 
       <section>
@@ -146,8 +190,13 @@ export default function ConsultasAvanzadas() {
               </tr>
             </thead>
             <tbody>
+<<<<<<< HEAD
               {clientesFrecuentes.map((c, i) => (
                 <tr key={`${c.cliente_id}-${c.mes}-${i}`}>
+=======
+              {clientesFrecuentes.map((c) => (
+                <tr key={c.cliente_id}>
+>>>>>>> e861dfb425c81da3c70655e735044c3c15cd8507
                   <td className="border px-3 py-1">{c.cliente_id}</td>
                   <td className="border px-3 py-1">{c.mes}</td>
                   <td className="border px-3 py-1">{c.total_visitas}</td>

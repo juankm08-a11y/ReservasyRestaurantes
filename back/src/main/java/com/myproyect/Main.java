@@ -31,8 +31,8 @@ public class Main {
             List<Mesa> mesas = mesaRepo.findAll();
             System.out.println("Mesas encontradas: " + mesas.size());
         } catch (Exception e) {
-            System.out.println("Conexion fallida" + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+
         }
         Api.init();
         CorsConfig.enableCors();
