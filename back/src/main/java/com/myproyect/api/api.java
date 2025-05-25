@@ -28,7 +28,7 @@ public class Api {
         get("/api/reservas/completadas-por-dia-hora", (req, res) -> {
             res.type("application/json");
             String sql = "SELECT DAYNAME(fecha) AS dia, hora, COUNT(*) AS total "
-                    + "FROM reservas "
+                    + "FROM reserva "
                     + "WHERE estado = 'Completada' "
                     + "GROUP BY dia, hora "
                     + "ORDER BY total DESC";
@@ -51,19 +51,20 @@ public class Api {
                             .append("}");
                 }
             } catch (Exception e) {
-                halt(500, "Error SQL:" + e.getMessage());
+                halt(500, "Error SQL: " + e.getMessage());
             }
             return sb.append("]").toString();
-
         });
 
         get("/api/reservas/canceladas-ultimos-3-meses", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT * FROM reservas "
+            String sql = "SELECT * FROM reserva "
                     + "WHERE estado = 'Cancelada' "
                     + "AND fecha >= CURDATE() - INTERVAL 3 MONTH";
+
             StringBuilder sb = new StringBuilder("[");
-            try (var conn = DatabaseConnection.getInstance();
+            try (
+                    var conn = DatabaseConnection.getInstance();
                     var pst = conn.prepareStatement(sql);
                     var rs = pst.executeQuery()) {
                 var md = rs.getMetaData();
@@ -96,13 +97,15 @@ public class Api {
 
         get("/api/reservas/completadas-por-mesa-hora", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas " +
-                    "FROM reservas " +
-                    "WHERE estado = 'Completada' " +
-                    "GROUP BY mesa_id, hora " +
-                    "ORDER BY total_reservas DESC";
+            String sql = "SELECT mesa_id, hora, COUNT(*) AS total_reservas "
+                    + "FROM reserva "
+                    + "WHERE estado = 'Completada' "
+                    + "GROUP BY mesa_id, hora "
+                    + "ORDER BY mesa_id ASC, total_reservas DESC";
+
             StringBuilder sb = new StringBuilder("[");
-            try (var conn = DatabaseConnection.getInstance();
+            try (
+                    var conn = DatabaseConnection.getInstance();
                     var pst = conn.prepareStatement(sql);
                     var rs = pst.executeQuery()) {
                 boolean first = true;
@@ -125,13 +128,15 @@ public class Api {
 
         get("/api/reservas/clientes-frecuentes", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT cliente_id, MONTH(fecha) AS mes, COUNT(*) AS total_visitas " +
-                    "FROM reservas " +
-                    "WHERE estado = 'Completada' " +
-                    "GROUP BY cliente_id, mes " +
-                    "HAVING total_visitas > 5";
+            String sql = "SELECT cliente_id, MONTH(fecha) AS mes, COUNT(*) AS total_visitas "
+                    + "FROM reserva "
+                    + "WHERE estado = 'Completada' "
+                    + "GROUP BY cliente_id, mes "
+                    + "HAVING total_visitas > 5";
+
             StringBuilder sb = new StringBuilder("[");
-            try (var conn = DatabaseConnection.getInstance();
+            try (
+                    var conn = DatabaseConnection.getInstance();
                     var pst = conn.prepareStatement(sql);
                     var rs = pst.executeQuery()) {
                 boolean first = true;
@@ -154,13 +159,15 @@ public class Api {
 
         get("/api/reservas/porcentaje-canceladas", (req, res) -> {
             res.type("application/json");
-            String sql = "SELECT " +
-                    "(SELECT COUNT(*) FROM reservas WHERE estado = 'Cancelada') * 100.0 / COUNT(*) AS porcentaje_canceladas "
-                    +
-                    "FROM reservas";
-            try (var conn = DatabaseConnection.getInstance();
+            String sql = "SELECT "
+                    + "(COUNT(CASE WHEN estado = 'Cancelada' THEN 1 END) * 100.0) / COUNT(*) AS porcentaje_canceladas "
+                    + "FROM reserva";
+
+            try (
+                    var conn = DatabaseConnection.getInstance();
                     var pst = conn.prepareStatement(sql);
                     var rs = pst.executeQuery()) {
+
                 if (rs.next()) {
                     return "{\"porcentaje_canceladas\":" + rs.getDouble("porcentaje_canceladas") + "}";
                 } else {
@@ -171,6 +178,5 @@ public class Api {
                 return null;
             }
         });
-
     }
 }
